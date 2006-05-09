@@ -1,0 +1,10 @@
+<!===== ==========================================================
+ ! environment for HcalDigis validation
+ !===============================================================>
+
+<environment name=testsuite>
+
+<executable name=testsuite.csh>validation suite</executable>
+
+</environment>
+
