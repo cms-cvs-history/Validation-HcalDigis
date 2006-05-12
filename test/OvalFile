@@ -4,9 +4,9 @@
 
 <config name="run tool" value="oval">
 
-<environment name=testsuite>
+<environment name=test_suite>
 
-<executable name=testsuite.csh>validation suite</executable>
+<executable name=test_suite.csh>validation suite</executable>
 
 </environment>
 

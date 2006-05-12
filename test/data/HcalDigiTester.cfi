@@ -27,11 +27,7 @@ include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
   }
 
 
-  service = MessageLogger 
-  {
-     vstring destinations = {"cout"}
-     PSet cout = { PSet default = { int32 limit = 0 } } 
-  }
+  service = MessageLogger { }
 
   service = DaqMonitorROOTBackEnd{ }
 
