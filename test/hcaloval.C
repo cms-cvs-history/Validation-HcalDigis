@@ -73,17 +73,18 @@ void hcaloval(const char* run, Bool_t drawhist = false){
  
 
  
- TH2* meDigiSimhit_;
+ TH2F* meDigiSimhit_;
  TString name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
+
  name_meDigiSimhit = name_meDigiSimhit + run + ";1";
  rfile->GetObject(name_meDigiSimhit,meDigiSimhit_);
    
  
- TH2* meDigiSimhit_new;
+ TH2F* meDigiSimhit_new;
  sfile->GetObject(name_meDigiSimhit,meDigiSimhit_new); 
  
- myPV->PVCompute(meDigiSimhit_->ProfileY() ,meDigiSimhit_new->ProfileY() , drawhist);
- 
+ myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
+ //("",-1,-1,"i")
  
  
  TH1* meSumDigis_;
