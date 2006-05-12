@@ -1,6 +1,8 @@
 #!/bin/csh
 
     eval `scramv1 ru -csh`
+    SealPluginRefresh
+        
     rm *.xml*
     if ( -e outputDigisHB.log ) rm outputDigisHB.log
     if ( -e outputDigisHB.log ) rm outputDigisHE.log
