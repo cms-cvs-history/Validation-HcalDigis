@@ -6,7 +6,7 @@
 void hcaloval(const char* run, Bool_t drawhist = false){
  gROOT ->Reset();
  char name[50] ;
- char det[50] = run;
+ char det[10] = run;
  
  TString PathToRef = "../data/";
  TString rfilename;
@@ -36,6 +36,49 @@ void hcaloval(const char* run, Bool_t drawhist = false){
  gROOT->ProcessLine(".x HistoCompare.C");
  HistoCompare * myPV = new HistoCompare();
 
+ char noise = "n";
+ if( det[1] == noise ){
+
+   TH1* meSumDigisHB_;
+   TString name_meSumDigisHB = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
+   name_meSumDigisHB = name_meSumDigisHB + run + "_HB;1";
+   rfile->GetObject(name_meSumDigisHB  , meSumDigisHB_  );
+ 
+   TH1* meSumDigisHB_new;
+   sfile->GetObject(name_meSumDigisHB ,meSumDigisHB_new ); 
+   myPV->PVCompute(meSumDigisHB_ ,meSumDigisHB_new , drawhist);
+   //===============================
+   TH1* meSumDigisHE_;
+   TString name_meSumDigisHE = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
+   name_meSumDigisHE = name_meSumDigisHE + run + "_HE;1";
+   rfile->GetObject(name_meSumDigisHE  , meSumDigisHE_  );
+ 
+   TH1* meSumDigisHE_new;
+   sfile->GetObject(name_meSumDigisHE ,meSumDigisHE_new ); 
+   myPV->PVCompute(meSumDigisHE_ ,meSumDigisHE_new , drawhist);
+   //===================================
+   TH1* meSumDigisHF_;
+   TString name_meSumDigisHF = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
+   name_meSumDigisHF = name_meSumDigisHF + run + "_HF;1";
+   rfile->GetObject(name_meSumDigisHF  , meSumDigisHF_  );
+ 
+   TH1* meSumDigisHF_new;
+   sfile->GetObject(name_meSumDigisHF ,meSumDigisHF_new ); 
+   myPV->PVCompute(meSumDigisHF_ ,meSumDigisHF_new , drawhist);
+   //===================================
+   TH1* meSumDigisHO_;
+   TString name_meSumDigisHO = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
+   name_meSumDigisHO = name_meSumDigisHO + run + "_HO;1";
+   rfile->GetObject(name_meSumDigisHO  , meSumDigisHO_  );
+ 
+   TH1* meSumDigisHO_new;
+   sfile->GetObject(name_meSumDigisHO ,meSumDigisHO_new ); 
+   myPV->PVCompute(meSumDigisHO_ ,meSumDigisHO_new , drawhist);
+
+ }
+
+ 
+if( det[1] != noise){
 
  TH1* meEta_;
  TString name_meEta = "DQMData/HcalDigiTask/HcalDigiTask_Eta_of_digis_";
@@ -95,6 +138,6 @@ void hcaloval(const char* run, Bool_t drawhist = false){
  TH1* meSumDigis_new;
  sfile->GetObject(name_meSumDigis ,meSumDigis_new ); 
  myPV->PVCompute(meSumDigis_ ,meSumDigis_new , drawhist);
-   
+}  
    
 }

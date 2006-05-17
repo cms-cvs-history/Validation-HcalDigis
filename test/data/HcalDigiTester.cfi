@@ -21,11 +21,6 @@ include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
     untracked bool doNoise = false
   }
 
-  module hcalSim = HcalDigiProducer {
-    bool doNoise = false
-    bool doTimeSlew = true	
-  }
-
 
   service = MessageLogger { }
 
