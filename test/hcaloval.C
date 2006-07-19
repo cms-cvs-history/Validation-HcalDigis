@@ -3,8 +3,18 @@
 #include "TTree.h"
 #include "TText.h"
 
-void hcaloval(const char* run, Bool_t drawhist = false){
+void hcaloval(const char* run, const char* drawhist = "none"){
  gROOT ->Reset();
+ if (drawhist == "ps"){
+   TCanvas *hcal = new TCanvas("Hcal","Hcal",0,0,707,500 );
+   TString figure;
+   figure = "figure";
+   figure += run;
+   figure += ".ps";
+   ps = new TPostScript(figure , -112);
+   ps->Range(29.7 , 21.0);
+ }
+
  char name[50] ;
  char det[10] = run;
  
@@ -47,6 +57,7 @@ void hcaloval(const char* run, Bool_t drawhist = false){
    TH1* meSumDigisHB_new;
    sfile->GetObject(name_meSumDigisHB ,meSumDigisHB_new ); 
    myPV->PVCompute(meSumDigisHB_ ,meSumDigisHB_new , drawhist);
+   if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
    //===============================
    TH1* meSumDigisHE_;
    TString name_meSumDigisHE = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
@@ -56,6 +67,7 @@ void hcaloval(const char* run, Bool_t drawhist = false){
    TH1* meSumDigisHE_new;
    sfile->GetObject(name_meSumDigisHE ,meSumDigisHE_new ); 
    myPV->PVCompute(meSumDigisHE_ ,meSumDigisHE_new , drawhist);
+   if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
    //===================================
    TH1* meSumDigisHF_;
    TString name_meSumDigisHF = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
@@ -65,6 +77,7 @@ void hcaloval(const char* run, Bool_t drawhist = false){
    TH1* meSumDigisHF_new;
    sfile->GetObject(name_meSumDigisHF ,meSumDigisHF_new ); 
    myPV->PVCompute(meSumDigisHF_ ,meSumDigisHF_new , drawhist);
+   if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
    //===================================
    TH1* meSumDigisHO_;
    TString name_meSumDigisHO = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
@@ -74,7 +87,7 @@ void hcaloval(const char* run, Bool_t drawhist = false){
    TH1* meSumDigisHO_new;
    sfile->GetObject(name_meSumDigisHO ,meSumDigisHO_new ); 
    myPV->PVCompute(meSumDigisHO_ ,meSumDigisHO_new , drawhist);
-
+   if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
  }
 
  
@@ -88,7 +101,7 @@ if( det[1] != noise){
  sfile->GetObject( name_meEta,meEta_new);
  
  myPV->PVCompute(meEta_ ,meEta_new  , drawhist);
- 
+ if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
   
  
  TH1* mePhi_;
@@ -101,7 +114,7 @@ if( det[1] != noise){
  sfile->GetObject(name_mePhi,mePhi_new);
  
  myPV->PVCompute(mePhi_ ,mePhi_new  , drawhist);
- 
+ if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
  
  TH1* menDigis_;
  TString name_menDigis = "DQMData/HcalDigiTask/HcalDigiTask_number_of_digis_";
@@ -113,7 +126,7 @@ if( det[1] != noise){
  sfile->GetObject(name_menDigis,menDigis_new);
  
  myPV->PVCompute(menDigis_ ,menDigis_new , drawhist);
- 
+if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
 
  
  TH2F* meDigiSimhit_;
@@ -127,6 +140,7 @@ if( det[1] != noise){
  sfile->GetObject(name_meDigiSimhit,meDigiSimhit_new); 
  
  myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
+ if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
  //("",-1,-1,"i")
  
  
@@ -138,6 +152,7 @@ if( det[1] != noise){
  TH1* meSumDigis_new;
  sfile->GetObject(name_meSumDigis ,meSumDigis_new ); 
  myPV->PVCompute(meSumDigis_ ,meSumDigis_new , drawhist);
+ if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
 }  
-   
+ if (drawhist == "ps") ps->Close();
 }
