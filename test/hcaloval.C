@@ -1,3 +1,8 @@
+// comparison of digi histograms with reference ones.
+//  root -b -q hcaloval.C\(\"HB\"\) - just for PV comparison.
+//  root -b -q hcaloval.C\(\"HB\",\"gif\"\) - PV comparison and creation of gif for each histo
+//  root -b -q hcaloval.C\(\"HB\",\"ps\"\) - PV comparison and creation of ps file for each subdetector
+
 #include <iostream.h>
 #include "TFile.h"
 #include "TTree.h"
@@ -128,21 +133,39 @@ if( det[1] != noise){
  myPV->PVCompute(menDigis_ ,menDigis_new , drawhist);
 if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
 
- 
- TH2F* meDigiSimhit_;
- TString name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
+//************************************* 
+if (drawhist=="gif" || drawhist=="ps"){ 
+	TProfile* meDigiSimhit_;
+ 	TString name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
 
- name_meDigiSimhit = name_meDigiSimhit + run + ";1";
- rfile->GetObject(name_meDigiSimhit,meDigiSimhit_);
+	 name_meDigiSimhit = name_meDigiSimhit + run + "(profile);1";
+ 	rfile->GetObject(name_meDigiSimhit,meDigiSimhit_);
    
  
- TH2F* meDigiSimhit_new;
- sfile->GetObject(name_meDigiSimhit,meDigiSimhit_new); 
+ 	TProfile* meDigiSimhit_new;
+ 	sfile->GetObject(name_meDigiSimhit,meDigiSimhit_new); 
  
- myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
- if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
- //("",-1,-1,"i")
- 
+ 	myPV->PVCompute(meDigiSimhit_,meDigiSimhit_new , drawhist);
+// myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
+ 	if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
+ }
+
+if (drawhist=="none"){
+        TH2F* meDigiSimhit_;
+        TString name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
+
+         name_meDigiSimhit = name_meDigiSimhit + run + ";1";
+        rfile->GetObject(name_meDigiSimhit,meDigiSimhit_);
+
+
+        TH2F* meDigiSimhit_new;
+        sfile->GetObject(name_meDigiSimhit,meDigiSimhit_new);
+
+         myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
+        if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
+ }
+
+ //*************************************
  
  TH1* meSumDigis_;
  TString name_meSumDigis = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)_";
@@ -156,3 +179,4 @@ if (drawhist == "ps") { hcal->Update(); ps->NewPage();}
 }  
  if (drawhist == "ps") ps->Close();
 }
+
