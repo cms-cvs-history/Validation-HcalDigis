@@ -14,7 +14,7 @@
 class HcalOval
 {
 public:
-  HcalOval(const char* runtype, const char* drawhisto);
+  HcalOval(const char* runtype, const char* drawhisto="none");
   ~HcalOval();
 
   void process(string name, string subdet);
