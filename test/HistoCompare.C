@@ -1,17 +1,25 @@
-#include <iostream.h>
+#include "TCanvas.h"
+#include <strstream>
+#include "TString.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TProfile.h"
+#include "TText.h"
+#include "TCanvas.h"
+#include <iostream>
 
 class HistoCompare {
 
  public:
 
-  HistoCompare() { std::cout << "Initializing HistoCompare... " << std::endl; } ;
+  HistoCompare() {}
 
   void PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawhist);
-  void PVCompute(TH2 * oldHisto , TH2 * newHisto , char* drawhist);
-  void PVCompute(TProfile * oldHisto , TProfile * newHisto , char* drawhist);
+  void PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* drawhist);
+  void PVCompute(TProfile * oldHisto , TProfile * newHisto , const char* drawhist);
 
  private:
-  
+
   Double_t mypv;
 
   TH1 * myoldHisto1;
@@ -23,27 +31,31 @@ class HistoCompare {
   TProfile * myoldProfile;
   TProfile * mynewProfile;
 
+  TCanvas * canvas;
+
   TText * myte;
   Bool_t  myhistdraw;
 
 };
 
-HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* histdraw)
+
+void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption)
 {
+  string histdraw(drawoption);
   myoldHisto1 = oldHisto;
   mynewHisto1 = newHisto;
   if ( histdraw == "ps" || histdraw == "gif"  ) {
     if ( histdraw == "gif" )  
-      {TCanvas * Hcal = new TCanvas("Hcal","Hcal",800,600);}
+      {canvas = new TCanvas("Hcal","Hcal",800,600);}
     oldHisto->UseCurrentStyle();
     newHisto->UseCurrentStyle();
     oldHisto->SetLineColor(45);
     newHisto->SetLineColor(47);
     oldHisto->Draw();
     newHisto->Draw("same");
-    TString name = oldHisto->GetTitle(); 
+    string name = oldHisto->GetTitle(); 
     name +=  ".gif" ;
-    if ( histdraw == "gif" ) Hcal->Print(name);
+    if ( histdraw == "gif" ) canvas->Print(name.c_str());
   } 
   Double_t mypv = myoldHisto1->Chi2Test(mynewHisto1,"OU");
   std::strstream buf;
@@ -58,7 +70,7 @@ HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* histdraw)
   
 }
 
-HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , char* histdraw)
+void HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* histdraw)
 {
   
   myoldHisto2 = oldHisto;
@@ -66,7 +78,7 @@ HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , char* histdraw)
   if ( histdraw == "ps" || histdraw == "gif"  ) {
    
      if ( histdraw == "gif" )  
-      {TCanvas * Hcal = new TCanvas("Hcal","Hcal",800,600);}
+      {canvas = new TCanvas("Hcal","Hcal",800,600);}
 
     oldHisto->UseCurrentStyle();
     newHisto->UseCurrentStyle();
@@ -77,7 +89,7 @@ HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , char* histdraw)
     TString name = oldHisto->GetTitle(); 
     name +=  ".gif" ;
   
-    if ( histdraw == "gif" ) Hcal->Print(name);
+    if ( histdraw == "gif" ) canvas->Print(name);
   } 
 
   Double_t mypv = myoldHisto2->Chi2Test(mynewHisto2,"OU");
@@ -94,12 +106,12 @@ HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , char* histdraw)
 }
 
 
-HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , char* histdraw)
+void HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , const char* histdraw)
 {
   if ( histdraw == "ps" || histdraw == "gif"  ) {
    
     if ( histdraw == "gif" )  
-      {TCanvas * Hcal = new TCanvas("Hcal","Hcal",800,600);}
+      {canvas = new TCanvas("Hcal","Hcal",800,600);}
     oldHisto->UseCurrentStyle();
     newHisto->UseCurrentStyle();
     oldHisto->SetLineColor(45);
@@ -108,7 +120,7 @@ HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , char* histdr
     newHisto->Draw("same");
     TString name = oldHisto->GetTitle(); 
     name +=  ".gif" ;
-    if ( histdraw == "gif" ) Hcal->Print(name);
+    if ( histdraw == "gif" ) canvas->Print(name);
   }
   myoldProfile = oldHisto;
   mynewProfile = newHisto;
