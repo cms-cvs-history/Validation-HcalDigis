@@ -16,10 +16,10 @@
     cmsRun --parameter-set HODigiTester.cfg >& outputDigisHO.log
     cmsRun --parameter-set noiseDigiTester.cfg >& outputDigis_noise.log
   
-    root -b -q hcaloval.C\(\"HB\"\)
-    root -b -q hcaloval.C\(\"HE\"\)
-    root -b -q hcaloval.C\(\"HF\"\)
-    root -b -q hcaloval.C\(\"HO\"\)
-    root -b -q hcaloval.C\(\"_noise\"\)
+    root -b -q HcalOval.C\(\"HB\"\)
+    root -b -q HcalOval.C\(\"HE\"\)
+    root -b -q HcalOval.C\(\"HF\"\)
+    root -b -q HcalOval.C\(\"HO\"\)
+    root -b -q HcalOval.C\(\"_noise\"\)
 
 
