@@ -1,5 +1,5 @@
 
-path p = { mix, hcalSim, hcalDigiAnalyzer}
+path p = { mix, hcalDigis, hcalDigiAnalyzer}
 
 
 
