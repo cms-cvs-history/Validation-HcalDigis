@@ -57,7 +57,10 @@ void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption)
     name +=  ".gif" ;
     if ( histdraw == "gif" ) canvas->Print(name.c_str());
   } 
-  Double_t mypv = myoldHisto1->Chi2Test(mynewHisto1,"OU");
+  
+  Double_t *res;
+  Double_t mypv = myoldHisto1->Chi2Test( mynewHisto1,"UU", res);
+
   std::strstream buf;
   std::string value;
   buf<<"PV="<<mypv<<std::endl;
@@ -70,9 +73,9 @@ void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption)
   
 }
 
-void HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* histdraw)
+void HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* drawoption)
 {
-  
+  string histdraw(drawoption); 
   myoldHisto2 = oldHisto;
   mynewHisto2 = newHisto;
   if ( histdraw == "ps" || histdraw == "gif"  ) {
@@ -86,13 +89,15 @@ void HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* histd
     newHisto->SetLineColor(47);
     oldHisto->Draw();
     newHisto->Draw("same");
-    TString name = oldHisto->GetTitle(); 
+    string name = oldHisto->GetTitle(); 
     name +=  ".gif" ;
   
-    if ( histdraw == "gif" ) canvas->Print(name);
+    if ( histdraw == "gif" ) canvas->Print(name.c_str());
   } 
 
-  Double_t mypv = myoldHisto2->Chi2Test(mynewHisto2,"OU");
+  Double_t *res;
+  Double_t mypv = myoldHisto2->Chi2Test( mynewHisto2,"UU", res);
+
   std::strstream buf;
   std::string value;
   buf<<"PV="<<mypv<<std::endl;
@@ -106,8 +111,9 @@ void HistoCompare::PVCompute(TH2 * oldHisto , TH2 * newHisto , const char* histd
 }
 
 
-void HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , const char* histdraw)
+void HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , const char* drawoption)
 {
+  string histdraw(drawoption);
   if ( histdraw == "ps" || histdraw == "gif"  ) {
    
     if ( histdraw == "gif" )  
@@ -118,15 +124,17 @@ void HistoCompare::PVCompute(TProfile * oldHisto , TProfile * newHisto , const c
     newHisto->SetLineColor(47); 
     oldHisto->Draw();
     newHisto->Draw("same");
-    TString name = oldHisto->GetTitle(); 
+    string name = oldHisto->GetTitle(); 
     name +=  ".gif" ;
-    if ( histdraw == "gif" ) canvas->Print(name);
+name = "test.gif";
+    if ( histdraw == "gif" ) canvas->Print(name.c_str());
   }
   myoldProfile = oldHisto;
   mynewProfile = newHisto;
  
 
-  Double_t mypv = myoldProfile->Chi2Test(mynewProfile,"OU");
+  Double_t *res;
+  Double_t mypv = myoldProfile->Chi2Test( mynewProfile,"UU", res);
   std::strstream buf;
   std::string value;
   buf<<"PV="<<mypv<<std::endl;
