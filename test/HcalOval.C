@@ -108,7 +108,7 @@ void HcalOval::process(string histname, string subdet)
 
 void HcalOval::runNoise()
 {
-  string histname = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)";
+  string histname = "DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis_fC";
   process(histname, "noise_HB");
   process(histname, "noise_HE");
   process(histname, "noise_HF");
@@ -139,7 +139,7 @@ void HcalOval::runProfile()
 {
   TProfile* meDigiSimhit_;
   string name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
-  name_meDigiSimhit = name_meDigiSimhit + run + "(profile);1";
+  name_meDigiSimhit = name_meDigiSimhit + run + "_profile;1";
 std::cout << "PROCESS " << name_meDigiSimhit << std::endl;
 
   rfile->GetObject(name_meDigiSimhit.c_str(),meDigiSimhit_);
@@ -186,7 +186,7 @@ void HcalOval::runAll()
     {
       runProfile();
     }
-    process("DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis(fC)", run);
+    process("DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis_fC", run);
   }
 }
 
