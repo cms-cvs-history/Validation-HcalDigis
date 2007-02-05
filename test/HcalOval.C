@@ -132,6 +132,7 @@ void HcalOval::runStandard()
   process(ndigiHist, run);
   process("DQMData/HcalDigiTask/HcalDigiTask_bin_4_frac", run);
   process("DQMData/HcalDigiTask/HcalDigiTask_bin_5_6_frac", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_Ratio_energy_digis_vs_simhits", run);
 }
 
 
