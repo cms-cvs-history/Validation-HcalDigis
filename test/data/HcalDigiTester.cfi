@@ -1,44 +1,23 @@
-
-path p = { mix, hcalDigis, hcalDigiAnalyzer}
-
-
-
-#Geometry
-include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
-
-    module mix = MixingModule {
-          int32 bunchspace = 25
-   }
-
-   es_module = EcalBarrelGeometryEP {}
-   es_module = EcalEndcapGeometryEP {}
-   es_module = HcalHardcodeGeometryEP {}
-   es_module = CaloTowerHardcodeGeometryEP {}
-   es_module = CaloGeometryBuilder {}
-
-
-  module ecalSim = EcalDigiProducer {
-    untracked bool doNoise = false
+ 
+  source = PoolSource {
+     untracked vstring fileNames =
+{'file:/localscratch/dkonst/CMSSW_1_3_0_pre1_25_01_2007/CMSSW_1_2_0/src/Validation/HcalHits/test/simevent_HB.root'}
+     untracked int32 maxEvents = 10
+     untracked uint32 debugVebosity = 10
+     untracked bool   debugFlag     = true
   }
-
 
   service = MessageLogger { }
 
   service = DaqMonitorROOTBackEnd{ }
 
-
-	
-  es_module = HcalDbProducer {}
-
-  es_source es_hardcode = HcalHardcodeCalibrations
-   {
-      untracked vstring toGet =
-      {
-         "Pedestals", "PedestalWidths",
-         "Gains", "GainWidths",
-         "QIEShape", "QIEData",
-         "ChannelQuality", "ElectronicsMap"
-      }
-   }
+include "Configuration/JetMET/data/calorimetry-digitization.cff"
 
 
+  module hcalDigiAnalyzer = HcalDigiTester{
+        untracked string outputFile = 'HcalDigisValidationHE.root'
+        untracked string hcalselector   = 'HE'
+        untracked bool subpedvalue      = false
+  }
+
+path p = {caloDigi,hcalDigiAnalyzer}

@@ -14,18 +14,18 @@
 class HcalOval
 {
 public:
-  HcalOval(const char* runtype, const char* drawhisto="none");
+  HcalOval(const char* runtype, const char* drawhisto="none",string path2ref = "../data/", string path2data ="");
   ~HcalOval();
 
   void process(string name, string subdet);
   void runNoise();
   void runStandard();
-  void runProfile();
-  void runNone();
   void runAll();
 
 
 private:
+  string path2ref;
+  string path2data;
   string run;
   string drawhist;
   bool isNoise;
@@ -36,7 +36,7 @@ private:
 };
 
 
-HcalOval::HcalOval(const char* runtype, const char* drawhisto)
+HcalOval::HcalOval(const char* runtype, const char* drawhisto, string path2ref, string path2data)
 : run(runtype),
   drawhist(drawhisto),
   isNoise(runtype == "_noise"),
@@ -51,15 +51,17 @@ HcalOval::HcalOval(const char* runtype, const char* drawhisto)
     string figure = "figure";
     figure += run;
     figure += ".ps";
-    ps = new TPostScript(figure , -112);
+    ps = new TPostScript(figure.c_str()  , -112);
     ps->Range(29.7 , 21.0);
   }
 
-  string PathToRef = "../data/";
+
   string rfilename;
-  rfilename = PathToRef+ "HcalDigisValidation" +run + "_ref.root";
-  string sfilename= "";
-  sfilename = sfilename +  "HcalDigisValidation" +run + ".root";
+  rfilename = path2ref+ "HcalDigisValidation" +run + "_ref.root";
+  string sfilename;
+  sfilename = path2data + "HcalDigisValidation" +run + ".root";
+
+
 
   delete gROOT->GetListOfFiles()->FindObject(rfilename.c_str());
   delete gROOT->GetListOfFiles()->FindObject(sfilename.c_str());
@@ -97,7 +99,7 @@ void HcalOval::process(string histname, string subdet)
   rfile->GetObject(tname.c_str(), oldHist);
   sfile->GetObject(tname.c_str(), newHist); 
   HistoCompare comp;
-  comp.PVCompute(oldHist, newHist, drawhist.c_str());
+  comp.PVCompute(oldHist, newHist, drawhist.c_str(),"");
   if (drawhist == "ps") 
   { 
     canvas->Update(); 
@@ -124,71 +126,30 @@ void HcalOval::runNoise()
 
 void HcalOval::runStandard()
 {
-  string etaHist("DQMData/HcalDigiTask/HcalDigiTask_Eta_of_digis");
-  string phiHist = "DQMData/HcalDigiTask/HcalDigiTask_Phi_of_digis";
+  string etaHist("DQMData/HcalDigiTask/HcalDigiTask_eta_of_digis");
+  string phiHist = "DQMData/HcalDigiTask/HcalDigiTask_phi_of_digis";
   string ndigiHist =  "DQMData/HcalDigiTask/HcalDigiTask_number_of_digis";
   process(etaHist, run);
   process(phiHist, run);
   process(ndigiHist, run);
-  process("DQMData/HcalDigiTask/HcalDigiTask_bin_4_frac", run);
-  process("DQMData/HcalDigiTask/HcalDigiTask_bin_5_6_frac", run);
-  process("DQMData/HcalDigiTask/HcalDigiTask_Ratio_energy_digis_vs_simhits", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_bin_5_frac", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_bin_6_7_frac", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_ratio_energy_digis_vs_simhits", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis_fC", run);
+  process("DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_profile",run);
+
 }
 
 
-void HcalOval::runProfile()
-{
-  TProfile* meDigiSimhit_;
-  string name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
-  name_meDigiSimhit = name_meDigiSimhit + run + "_profile;1";
-std::cout << "PROCESS " << name_meDigiSimhit << std::endl;
-
-  rfile->GetObject(name_meDigiSimhit.c_str(),meDigiSimhit_);
 
 
-  TProfile* meDigiSimhit_new;
-  sfile->GetObject(name_meDigiSimhit.c_str(),meDigiSimhit_new);
-
-  HistoCompare comp;
-  comp.PVCompute(meDigiSimhit_,meDigiSimhit_new , drawhist.c_str());
-  // myPV->PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
-  if (drawhist == "ps") { canvas->Update(); ps->NewPage();}
-}
-
-
-void HcalOval::runNone()
-{
-  TH2F* meDigiSimhit_;
-  string name_meDigiSimhit = "DQMData/HcalDigiTask/HcalDigiTask_energy_digis_vs_simhits_";
-
-  name_meDigiSimhit = name_meDigiSimhit + run + ";1";
-  rfile->GetObject(name_meDigiSimhit.c_str(),meDigiSimhit_);
-
-  TH2F* meDigiSimhit_new;
-  sfile->GetObject(name_meDigiSimhit.c_str(),meDigiSimhit_new);
-
-  HistoCompare comp;
-  comp.PVCompute(meDigiSimhit_->ProfileX() ,meDigiSimhit_new->ProfileX() , drawhist);
-  if (drawhist == "ps") { canvas->Update(); ps->NewPage();}
-}
  
 
 void HcalOval::runAll()
 {
-  if(isNoise)
-  {
-    runNoise();
-  }
-  else
-  {
-    runStandard();
- 
-    if(drawhist == "gif" || drawhist == "ps")
-    {
-      runProfile();
-    }
-    process("DQMData/HcalDigiTask/HcalDigiTask_sum_over_digis_fC", run);
-  }
+
+    if (run != "_noise") runStandard();
+    if (run == "_noise") runNoise(); 
 }
 
 

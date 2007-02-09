@@ -14,7 +14,7 @@ class HistoCompare {
 
   HistoCompare() {}
 
-  void PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawhist);
+  void PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawhist, char* addname);
 
  private:
 
@@ -26,7 +26,7 @@ class HistoCompare {
 };
 
 
-void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption)
+void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption, char* addname)
 {
   string histdraw(drawoption);
   if ( histdraw == "ps" || histdraw == "gif"  ) {
@@ -39,6 +39,7 @@ void HistoCompare::PVCompute(TH1 * oldHisto , TH1 * newHisto , char* drawoption)
     oldHisto->Draw();
     newHisto->Draw("same");
     string name = oldHisto->GetTitle(); 
+    name += addname;
     name +=  ".gif" ;
     if ( histdraw == "gif" ) canvas->Print(name.c_str());
   } 
