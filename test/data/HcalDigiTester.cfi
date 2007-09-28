@@ -1,23 +1,44 @@
+
+   include "Configuration/StandardSequences/data/Simulation.cff"
+   include "Configuration/StandardSequences/data/MixingNoPileUp.cff"
+   include "Configuration/StandardSequences/data/FakeConditions.cff"
+   include "Configuration/StandardSequences/data/Reconstruction.cff"
  
-  source = PoolSource {
-     untracked vstring fileNames =
-{'file:/localscratch/dkonst/CMSSW_1_3_0_pre1_25_01_2007/CMSSW_1_2_0/src/Validation/HcalHits/test/simevent_HB.root'}
-     untracked int32 maxEvents = 10
+  untracked PSet maxEvents = {untracked int32 input = -1}
+
+  source = PoolSource
+   {
+     untracked vstring fileNames = {'file:/afs/cern.ch/cms/data/CMSSW/Validation/HcalDigis/data/simhits_pi+100_etaphi44.root'}
      untracked uint32 debugVebosity = 10
      untracked bool   debugFlag     = true
-  }
+   }
 
   service = MessageLogger { }
 
   service = DaqMonitorROOTBackEnd{ }
 
-include "Configuration/JetMET/data/calorimetry-digitization.cff"
+  service = RandomNumberGeneratorService {
+            untracked uint32 sourceSeed = 135799753
+            PSet moduleSeeds =
+            {
+#              untracked uint32 VtxSmeared = 98765432
+#              untracked uint32 g4SimHits  = 11
+              untracked uint32 mix        = 12345
+              untracked uint32 ecalUnsuppressedDigis = 43434
+              untracked uint32 hcalDigis = 43434
+            }
+  }
 
+  include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+
+# ECAL is included in CalDigi, so minimize required resources
+  replace ecalUnsuppressedDigis.doNoise = false
+  replace ecalUnsuppressedDigis.doESNoise = false
 
   module hcalDigiAnalyzer = HcalDigiTester{
-        untracked string outputFile = 'HcalDigisValidationHE.root'
-        untracked string hcalselector   = 'HE'
+        untracked string outputFile = 'HcalDigisValidationHB.root'
+        untracked string hcalselector   = 'HB'
         untracked bool subpedvalue      = false
   }
 
-path p = {caloDigi,hcalDigiAnalyzer}
+path p = {mix,calDigi,hcalDigiAnalyzer}
