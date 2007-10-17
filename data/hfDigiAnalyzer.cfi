@@ -1,0 +1,7 @@
+module hfDigiAnalyzer = HcalDigiTester{
+    untracked string outputFile = 'HcalDigisValidationHF.root'
+    untracked string hcalselector   = 'HF'
+    untracked bool subpedvalue = true
+    InputTag digiLabel = hcalDigis
+}
+
