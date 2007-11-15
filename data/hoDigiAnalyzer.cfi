@@ -1,7 +1,0 @@
-module hoDigiAnalyzer = HcalDigiTester{
-    untracked string outputFile = 'HcalDigisValidationHO.root'
-    untracked string hcalselector   = 'HO'
-    InputTag digiLabel = hcalDigis
-    untracked bool subpedvalue = true
-}
-

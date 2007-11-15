@@ -25,6 +25,7 @@
 #              untracked uint32 g4SimHits  = 11
               untracked uint32 mix        = 12345
               untracked uint32 ecalUnsuppressedDigis = 43434
+              untracked uint32 hcalUnsuppressedDigis = 43434
               untracked uint32 hcalDigis = 43434
             }
   }
@@ -38,7 +39,8 @@
   module hcalDigiAnalyzer = HcalDigiTester{
         untracked string outputFile = 'HcalDigisValidationHB.root'
         untracked string hcalselector   = 'HB'
-        untracked bool subpedvalue      = false
+        untracked string zside          = '*'
+        InputTag digiLabel = hcalUnsuppressedDigis	
   }
 
 path p = {mix,calDigi,hcalDigiAnalyzer}
