@@ -1,0 +1,6 @@
+  module hcalDigiAnalyzer = HcalDigiTester{
+        untracked string outputFile = 'HcalDigisValidationHB.root'
+        untracked string hcalselector   = 'HB'
+        untracked string zside          = '*'
+        InputTag digiLabel = hcalUnsuppressedDigis	
+  }
