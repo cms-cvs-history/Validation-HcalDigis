@@ -14,9 +14,10 @@
      untracked bool   debugFlag     = true
    }
 
-  service = MessageLogger { }
+  include "DQMServices/Core/data/DQM.cfg"
+  replace DQM.collectorHost = ""
 
-  service = DaqMonitorROOTBackEnd{ }
+  service = MessageLogger { }
 
   include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 
