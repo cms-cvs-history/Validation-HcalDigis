@@ -22,14 +22,14 @@
   include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 
 # ECAL is included in CalDigi, so minimize required resources
-  replace ecalUnsuppressedDigis.doNoise = false
-  replace ecalUnsuppressedDigis.doESNoise = false
+  replace simEcalUnsuppressedDigis.doNoise = false
+  replace simEcalUnsuppressedDigis.doESNoise = false
 
   module hcalDigiAnalyzer = HcalDigiTester{
         untracked string outputFile = 'HcalDigisValidationHB.root'
         untracked string hcalselector   = 'HB'
         untracked string zside          = '*'
-        InputTag digiLabel = hcalUnsuppressedDigis	
+        InputTag digiLabel = simHcalUnsuppressedDigis	
   }
 
 path p = {mix,calDigi,hcalDigiAnalyzer}
