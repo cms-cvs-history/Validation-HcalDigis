@@ -1,6 +1,9 @@
 
    include "Configuration/StandardSequences/data/Simulation.cff"
    include "Configuration/StandardSequences/data/SimulationRandomNumberGeneratorSeeds.cff"
+   include "Configuration/StandardSequences/data/Geometry.cff"
+   include "Configuration/StandardSequences/data/Digi.cff"
+
    include "Configuration/StandardSequences/data/MixingNoPileUp.cff"
    include "Configuration/StandardSequences/data/FakeConditions.cff"
    include "Configuration/StandardSequences/data/Reconstruction.cff"
